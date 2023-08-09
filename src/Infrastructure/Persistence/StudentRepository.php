@@ -9,17 +9,17 @@ use Src\Infrastructure\EntityManagerCreator;
 
 class StudentRepository
 {
-    
-    public function __construct( public EntityManagerCreator $entityManagerCreator)
-    {
-        $this->entityManagerCreator = $entityManagerCreator;
+    public $entityManager;
+
+    public function __construct()
+    {   $entityManagerCreator = new EntityManagerCreator;
+        $this->entityManager = $entityManagerCreator->createEntityManager();
     }
 
     public function insertStudent(Student $student)
     {
-        $entityManager= $this->entityManagerCreator->createEntityManager();
-        $entityManager->persist($student);
-        $entityManager->flush();
+        $this->entityManager->persist($student);
+        $this->entityManager->flush();
 
         return true;
     }
@@ -28,8 +28,7 @@ class StudentRepository
 
     public function listAll()
     {
-        $entityManager= $this->entityManagerCreator->createEntityManager();
-        $studentRepository = $entityManager->getRepository(Student::class);
+        $studentRepository = $this->entityManager->getRepository(Student::class);
         $listStudents = $studentRepository->findAll();
         return  $listStudents;
     }
@@ -37,8 +36,7 @@ class StudentRepository
 
     public function findId()
     {
-        $entityManager= $this->entityManagerCreator->createEntityManager();
-        $studentRepository = $entityManager->getRepository(Student::class);
+        $studentRepository = $this->entityManager->getRepository(Student::class);
         $listStudents = $studentRepository->find(2);
         return  $listStudents;
     }
