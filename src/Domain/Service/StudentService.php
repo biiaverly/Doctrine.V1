@@ -52,7 +52,13 @@ class StudentService
         {
             return false;
         }
-        return true;
+        return $sucess;
+    }
+
+    public function renameStudent(string $cpf, string $newName)
+    {
+        return $this->doctrineRepository->rename($cpf,$newName);
+
     }
     
 }

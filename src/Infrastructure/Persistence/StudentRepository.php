@@ -51,7 +51,7 @@ class StudentRepository
         if(count($student)>0)
         {
 
-            return $student[0]->id;
+            return $student[0];
         }
 
         return false;
@@ -69,6 +69,20 @@ class StudentRepository
         $this->entityManager->flush();
 
         return true;
+    }
+
+    public function rename(string $cpf, string $newName)
+    {
+        $id = $this->findIdByCpf($cpf)->id;
+        if($id == false)
+        {
+            return false;;
+        }
+        $student = $this->entityManager->find(Student::class,$id);
+        $student->name = $newName;
+        $this->entityManager->flush();
+
+        return $student;
     }
 
 }
