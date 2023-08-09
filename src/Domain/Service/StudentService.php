@@ -10,24 +10,23 @@ use Src\Infrastructure\Persistence\StudentRepository;
 
 class StudentService
 {
+    public $doctrineRepository;
 
-    public function __construct(public StudentRepository $doctrineRepository)
+    public function __construct()
     {
-        $this->doctrineRepository = $doctrineRepository;
+        $this->doctrineRepository = new StudentRepository();
     }
 
     public function newStudent(Student $student)
     {
-        $doctrineRepository = new StudentRepository(new EntityManagerCreator);
-        $doctrineRepository->insertStudent($student);
+        $this->doctrineRepository->insertStudent($student);
 
         return true;
     }
 
     public function listStudents()
     {
-        $doctrineRepository = new StudentRepository(new EntityManagerCreator);
-        $list = $doctrineRepository->listAll();
+        $list = $this->doctrineRepository->listAll();
         foreach ($list as $student)
         {
             echo "ID: $student->id \n Nome: $student->name \n";
@@ -36,8 +35,7 @@ class StudentService
 
     public function findId()
     {
-        $doctrineRepository = new StudentRepository(new EntityManagerCreator);
-        $student = $doctrineRepository->findId(2);
+        $student = $this->doctrineRepository->findId(1);
         return $student;
     }
     
