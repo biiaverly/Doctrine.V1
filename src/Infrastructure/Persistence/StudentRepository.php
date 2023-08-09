@@ -34,10 +34,41 @@ class StudentRepository
     }
 
 
-    public function findId()
+    public function findById(int $id)
     {
         $studentRepository = $this->entityManager->getRepository(Student::class);
-        $listStudents = $studentRepository->find(2);
+        $listStudents = $studentRepository->find($id);
         return  $listStudents;
     }
+
+    public function findIdByCpf(string $cpf)
+    {
+ 
+        $studentRepository = $this->entityManager->getRepository(Student::class);
+        $student = $studentRepository->findBy([
+            'cpf' => $cpf
+        ]);
+        if(count($student)>0)
+        {
+
+            return $student[0]->id;
+        }
+
+        return false;
+    }
+
+    public function remove(string $cpf)
+    {
+        $id = $this->findIdByCpf($cpf);
+        if($id == false)
+        {
+            return false;;
+        }
+        $student = $this->entityManager->getPartialReference(Student::class,$id);
+        $this->entityManager->remove($student);
+        $this->entityManager->flush();
+
+        return true;
+    }
+
 }

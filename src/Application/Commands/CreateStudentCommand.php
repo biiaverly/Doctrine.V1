@@ -27,10 +27,15 @@ class CreateStudentCommand extends Command
     {
         $newstudent = $input->getArgument('student');
         $cpf = $input->getArgument('cpf');
-
+        $service = new StudentService;
+        $sucess = $service->findByCpf($cpf);
+        if($sucess==true)
+        {
+            $output->writeln('Student already exists. ');
+            return 1;
+        }
         $student = new Student($newstudent,$cpf);
 
-        $service = new StudentService;
         $service->newStudent($student);
         $output->writeln('Aluno ' . $newstudent . ' included.');
 

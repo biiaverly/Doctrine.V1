@@ -33,10 +33,26 @@ class StudentService
         }
     }
 
-    public function findId()
+    public function findId(int $id)
     {
-        $student = $this->doctrineRepository->findId(1);
+        $student = $this->doctrineRepository->findById($id);
         return $student;
+    }
+
+    public function findByCpf(string $cpf)
+    {
+        $student = $this->doctrineRepository->findIdByCpf($cpf);
+        return $student;
+    }
+
+    public function removeStudent(string $cpf)
+    {
+        $sucess =  $this->doctrineRepository->remove($cpf);
+        if($sucess==false)
+        {
+            return false;
+        }
+        return true;
     }
     
 }
